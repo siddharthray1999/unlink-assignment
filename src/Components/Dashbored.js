@@ -1,22 +1,21 @@
 import { useEffect } from "react";
+import satellite from "../Assets/satellite.svg";
 import rocket from "../Assets/rocket.jpg";
 import tworocket from "../Assets/tworocket.jpg";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchRockets } from "../Features/RocketsSlice";
+import { fetchRockets, fetchPastLaunch } from "../Features/RocketsSlice";
 
 const Main = () => {
   const dispatch = useDispatch();
   const rockets = useSelector((state) => state.rockets.rockets);
-  const status = useSelector((state) => state.rockets.status);
-  const error = useSelector((state) => state.rockets.error);
+  const pastLaunches = useSelector((state) => state.rockets.pastLaunches);
 
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchRockets());
-    }
-  }, [status, dispatch]);
-
-  const firstRocket = rockets.length > 0 ? rockets[0] : null;
+    dispatch(fetchRockets());
+    dispatch(fetchPastLaunch());
+  }, []);
+  // console.log(rockets);
+  console.log(pastLaunches);
 
   return (
     <div className="">
@@ -32,13 +31,13 @@ const Main = () => {
                   MISSION NAME
                 </div>
                 <div className="text-white text-lg">
-                  {firstRocket?.mission_name}
+                  {rockets[0]?.mission_name}
                 </div>
               </div>
               <div>
                 <div className="text-sm text-gray-500 uppercase">Rocket</div>
                 <div className="text-white text-lg">
-                  {firstRocket?.rocket?.rocket_name}
+                  {rockets[0]?.rocket?.rocket_name}
                 </div>
               </div>
               <div>
@@ -46,7 +45,7 @@ const Main = () => {
                   Flight Number
                 </div>
                 <div className="text-white text-lg">
-                  {firstRocket?.flight_number}
+                  {rockets[0]?.flight_number}
                 </div>
               </div>
               <div>
@@ -54,7 +53,7 @@ const Main = () => {
                   Time (UTC)
                 </div>
                 <div className="text-white text-lg">
-                  {firstRocket?.launch_date_utc}
+                  {rockets[0]?.launch_date_utc}
                 </div>
               </div>
             </div>
@@ -152,23 +151,31 @@ const Main = () => {
                 <div className="text-sm text-gray-500 uppercase">
                   MISSION NAME
                 </div>
-                <div className="text-white text-lg">ufdfd-44</div>
+                <div className="text-white text-lg">
+                  {pastLaunches[0]?.mission_name}
+                </div>
               </div>
               <div>
                 <div className="text-sm text-gray-500 uppercase">Rocket</div>
-                <div className="text-white text-lg">ufdfd-44</div>
+                <div className="text-white text-lg">
+                  {pastLaunches[0]?.rocket.rocket_name}
+                </div>
               </div>
               <div>
                 <div className="text-sm text-gray-500 uppercase">
                   Flight Number
                 </div>
-                <div className="text-white text-lg">ufdfd-44</div>
+                <div className="text-white text-lg">
+                  {pastLaunches[0]?.flight_number}
+                </div>
               </div>
               <div>
                 <div className="text-sm text-gray-500 uppercase">
                   Time (UTC)
                 </div>
-                <div className="text-white text-lg">ufdfd-44</div>
+                <div className="text-white text-lg">
+                  {pastLaunches[0]?.launch_date_utc}
+                </div>
               </div>
             </div>
             <div>
@@ -184,6 +191,9 @@ const Main = () => {
         </div>
         <div className="bg-[#00000080] w-[420px] h-[340px] rounded-xl p-5 flex flex-col justify-between">
           <div className="text-white text-xl">Starlink</div>
+          <div className="flex justify-center">
+            <img src={satellite} alt="" className="w-[100px]" />
+          </div>
           <div className="text-white text-center">
             There are currently 3268 active Starlink satellites on the low Earth
             orbit.

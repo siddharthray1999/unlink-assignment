@@ -1,8 +1,7 @@
 import Home from "./Components/Home";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Rockets from "./Components/Rockets";
-
-import Main from "./Components/Dashbored";
+import Dashbored from "./Components/Dashbored";
 function App() {
   const router = createBrowserRouter([
     {
@@ -13,8 +12,7 @@ function App() {
       path: "/",
       element: <Home />,
       children: [
-        { path: "/", element: <Home /> },
-        { path: "/dashbored", element: <Main /> },
+        { path: "/dashbored", element: <Dashbored /> },
         { path: "/Rocket", element: <Rockets /> },
       ],
     },

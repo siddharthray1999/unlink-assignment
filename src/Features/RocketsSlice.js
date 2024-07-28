@@ -1,16 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// Define the initial state of the rockets slice
 const initialState = {
   rockets: [],
-  status: "idle", // idle | loading | succeeded | failed
+  pastLaunches: [],
+  status: "idle",
+  pastLaunchesStatus: "idle",
   error: null,
+  pastLaunchesError: null,
 };
 
 const API_URL = "https://api.spacexdata.com/v3";
 
-// Define the async thunk to fetch rockets
 export const fetchRockets = createAsyncThunk(
   "rockets/fetchRockets",
   async () => {
@@ -40,6 +41,17 @@ const rocketsSlice = createSlice({
       .addCase(fetchRockets.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(fetchPastLaunch.pending, (state) => {
+        state.pastLaunchesStatus = "loading";
+      })
+      .addCase(fetchPastLaunch.fulfilled, (state, action) => {
+        state.pastLaunchesStatus = "succeeded";
+        state.pastLaunches = action.payload;
+      })
+      .addCase(fetchPastLaunch.rejected, (state, action) => {
+        state.pastLaunchesStatus = "failed";
+        state.pastLaunchesError = action.error.message;
       });
   },
 });
